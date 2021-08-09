@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { Form, Input, Button, Spin } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
-import { apis } from "../services";
 import { connect } from "react-redux";
-import { userLogin, userFullName } from "../store/actions/dataAction";
+import { userLogin, userFullName } from "../../store/actions/dataAction";
+import { login } from "../../store/actions";
 
 const SignIn = (props) => {
   const { userLogin, userFullName } = props;
@@ -13,41 +13,36 @@ const SignIn = (props) => {
 
   const history = useHistory();
 
-  const login = async (email, password) => {
-    try {
-      setIsLoading(true);
-      setErrorMessage(false);
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
 
-      const { data } = await apis.login({ email, password });
-
-      if (data) {
-        console.log("[DATA]", data);
+  const onFinish = (values) => {
+    setIsLoading(true);
+    setErrorMessage(false);
+    login({
+      values,
+      success: (data) => {
         setIsLoading(false);
         setErrorMessage(false);
 
         localStorage.setItem("token", data.access_token);
 
         userFullName(data.profile.firstName);
-        localStorage.setItem('user', JSON.stringify(data.profile));
+        localStorage.setItem("user", JSON.stringify(data.profile));
         userLogin();
 
         history.push("./user");
-      }
-      setIsLoading(false);
-    } catch (err) {
-      console.log("[ERROR]", err);
 
-      setErrorMessage(true);
-      setIsLoading(false);
-    }
-  };
+        setIsLoading(false);
+      },
+      failure: (err) => {
+        if (err) console.log("[ERROR]", err);
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
-  const onFinish = (values) => {
-    login(values.email, values.password);
+        setErrorMessage(true);
+        setIsLoading(false);
+      },
+    });
   };
 
   return (

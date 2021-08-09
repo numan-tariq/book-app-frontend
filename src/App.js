@@ -1,23 +1,28 @@
 import { useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import MainHeader from "./components/MainHeader";
-import Books from "./pages/Books";
-import Welcome from "./pages/Welcome";
-import SignIn from "./pages/SignIn";
-import User from "./pages/User";
-import AutherBooks from "./pages/AutherBooks";
-import "antd/dist/antd.css";
-import Protected from "../src/components/Protected";
-import EditBook from "../src/components/EditBook";
-import DeleteBook from "../src/components/DeleteBook";
 import { connect } from "react-redux";
-import { userLogin, userLogout, userFullName } from "./store/actions/dataAction";
+import "antd/dist/antd.css";
 
-function App({userLogin, userLogout, userFullName}) {
+import MainHeader from "./components/MainHeader/";
+import Books from "./pages/Books/";
+import Welcome from "./pages/Welcome/";
+import SignIn from "./pages/SignIn/";
+import User from "./pages/User/";
+import AutherBooks from "./pages/AutherBook/";
+import Protected from "./components/Protected/";
+import EditBook from "./components/EditBook/";
+import DeleteBook from "./components/DeleteBook/";
+import {
+  userLogin,
+  userLogout,
+  userFullName,
+} from "./store/actions/dataAction";
+
+function App({ userLogin, userLogout, userFullName }) {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       userLogin();
-      userFullName(JSON.parse(localStorage.getItem('user'))?.firstName);
+      userFullName(JSON.parse(localStorage.getItem("user"))?.firstName);
     } else {
       userLogout();
     }
@@ -56,4 +61,4 @@ function App({userLogin, userLogout, userFullName}) {
   );
 }
 
-export default connect(null, {userLogin, userLogout, userFullName})(App);
+export default connect(null, { userLogin, userLogout, userFullName })(App);

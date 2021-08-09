@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import classes from "./MainHeader.module.css";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Fade from "@material-ui/core/Fade";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import { useHistory } from "react-router";
-import { apis } from "../services";
 import { connect, useSelector } from "react-redux";
-import { userLogout } from "../store/actions/dataAction";
+
+import classes from "./MainHeader.module.css";
+import { userLogout } from "../../store/actions/dataAction";
 
 const MainHeader = (props) => {
   const { userLogout } = props;
@@ -17,20 +17,6 @@ const MainHeader = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const history = useHistory();
   const open = Boolean(anchorEl);
-
-  useEffect(() => {
-    userProfile();
-  }, []);
-
-  const userProfile = async () => {
-    try {
-      const { data } = await apis.getUserProfile();
-
-      if (data) return;
-    } catch (err) {
-      console.log("[ERROR]", err);
-    }
-  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 
-const DeleteBook = (props) => {
+const DeleteBook = () => {
   const [show, setShow] = useState(true);
 
   const handleClose = () => {
     setShow(false);
   };
 
-  const deleteBook = async (id) => {
+  const deleteBook = async () => {
     try {
     } catch (err) {
       console.log("[ERROR]", err);

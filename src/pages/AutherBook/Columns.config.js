@@ -1,43 +1,8 @@
-import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import { Table, Space } from "antd";
-import { apis } from "../services";
+import { Space } from "antd";
 
-const AutherBooks = () => {
-  const [books, setBooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    getBooks();
-  }, []);
-
-  const getBooks = async () => {
-    try {
-      const { data } = await apis.getAutherBooks();
-
-      if (data?.list?.length) {
-        setBooks(
-          data.list.map((x) => {
-            return { ...x, key: x._id };
-          })
-        );
-      }
-      setIsLoading(false);
-    } catch (err) {
-      console.log("[ERROR]", err);
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <section>
-      <Table columns={columns} dataSource={books} loading={isLoading} />
-    </section>
-  );
-};
-
-const columns = [
+export const columns = [
   {
     title: "Title",
     dataIndex: "title",
@@ -83,5 +48,3 @@ const columns = [
     ),
   },
 ];
-
-export default AutherBooks;
